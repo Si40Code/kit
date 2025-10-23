@@ -1,0 +1,25 @@
+# 基础配置 - 所有环境通用
+app:
+  name: multi-config-app
+  version: 1.0.0
+
+server:
+  host: 0.0.0.0
+  port: 8080  # 默认端口
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  max_connections: 100
+
+redis:
+  host: localhost
+  port: 6379
+
+log:
+  level: info
+  format: json
+
+
+

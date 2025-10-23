@@ -1,0 +1,40 @@
+# Payment 支付服务配置
+payment:
+  gateway: alipay  # alipay, wechat, stripe, paypal
+  currency: CNY
+  timeout: 30  # 支付超时时间（秒）
+  
+  # 支付宝配置
+  alipay:
+    app_id: "your-alipay-app-id"
+    private_key: "your-private-key"
+    public_key: "alipay-public-key"
+    notify_url: "https://your-domain.com/payment/alipay/notify"
+    return_url: "https://your-domain.com/payment/success"
+    
+  # 微信支付配置
+  wechat:
+    app_id: "your-wechat-app-id"
+    mch_id: "your-merchant-id"
+    api_key: "your-wechat-api-key"
+    notify_url: "https://your-domain.com/payment/wechat/notify"
+    
+  # Stripe 配置
+  stripe:
+    publishable_key: "pk_test_..."
+    secret_key: "sk_test_..."
+    webhook_secret: "whsec_..."
+    
+  # 支付策略
+  strategy:
+    auto_refund: true
+    refund_timeout: 7  # 天
+    max_refund_amount: 10000  # 最大退款金额（分）
+    
+  # 风控配置
+  risk_control:
+    enabled: true
+    max_amount: 50000  # 单笔最大金额（分）
+    daily_limit: 200000  # 日限额（分）
+    blacklist_check: true
+

@@ -1,0 +1,21 @@
+# 生产环境配置
+app:
+  env: production
+  debug: false
+
+server:
+  port: 8080
+
+database:
+  host: prod-db.example.com
+  # password 应该通过环境变量设置
+  max_connections: 500
+
+redis:
+  host: prod-redis.example.com
+
+log:
+  level: warn  # 生产环境只记录警告及以上级别
+
+
+

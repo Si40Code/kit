@@ -1,0 +1,26 @@
+# 基础配置 - 应用通用配置
+app:
+  name: business-modules-app
+  version: 1.0.0
+  environment: development
+
+server:
+  host: 0.0.0.0
+  port: 8080
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  database: app_db
+
+log:
+  level: info
+  format: json
+
+# 通用业务配置
+business:
+  timeout: 30
+  retry_count: 3
+  enable_cache: true
+

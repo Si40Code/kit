@@ -1,0 +1,40 @@
+# Email 邮件服务配置
+email:
+  smtp:
+    host: smtp.example.com
+    port: 587
+    username: noreply@example.com
+    password: "your-email-password"
+    ssl: false
+    tls: true
+    
+  # 发送者信息
+  from:
+    name: "系统通知"
+    address: "noreply@example.com"
+    
+  # 邮件模板配置
+  templates:
+    welcome:
+      subject: "欢迎注册 {app_name}"
+      template: "welcome.html"
+    password_reset:
+      subject: "密码重置"
+      template: "password_reset.html"
+    order_confirmation:
+      subject: "订单确认 - {order_id}"
+      template: "order_confirmation.html"
+      
+  # 邮件发送策略
+  strategy:
+    batch_size: 50
+    batch_interval: 30  # 秒
+    max_retry: 3
+    retry_interval: 10  # 秒
+    
+  # 邮件队列配置
+  queue:
+    enabled: true
+    max_size: 1000
+    worker_count: 5
+

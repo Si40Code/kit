@@ -1,0 +1,29 @@
+# SMS 短信服务配置
+sms:
+  provider: aliyun  # aliyun, tencent, twilio
+  api_key: "your-sms-api-key"
+  api_secret: "your-sms-api-secret"
+  sign_name: "您的应用"
+  template_code: "SMS_123456789"
+  rate_limit: 100  # 每分钟发送限制
+  timeout: 10      # 请求超时时间（秒）
+  
+  # 不同短信类型的配置
+  templates:
+    verification:
+      code: "SMS_VERIFY_001"
+      content: "您的验证码是：{code}，5分钟内有效"
+    notification:
+      code: "SMS_NOTIFY_001"
+      content: "您有新的通知：{message}"
+    marketing:
+      code: "SMS_MARKET_001"
+      content: "限时优惠：{offer}，点击查看详情"
+
+  # 短信发送策略
+  strategy:
+    batch_size: 100
+    batch_interval: 60  # 秒
+    max_retry: 3
+    retry_interval: 5   # 秒
+

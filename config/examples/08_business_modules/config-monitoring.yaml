@@ -1,0 +1,36 @@
+# Monitoring 监控服务配置（生产环境专用）
+monitoring:
+  # Prometheus 配置
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    
+  # Grafana 配置
+  grafana:
+    enabled: true
+    url: "http://grafana.example.com"
+    api_key: "your-grafana-api-key"
+    
+  # 告警配置
+  alerting:
+    enabled: true
+    channels:
+      - type: email
+        recipients: ["admin@example.com"]
+      - type: webhook
+        url: "https://hooks.slack.com/services/..."
+        
+  # 日志监控
+  log_monitoring:
+    enabled: true
+    level: error
+    retention_days: 30
+    
+  # 性能监控
+  performance:
+    enabled: true
+    cpu_threshold: 80
+    memory_threshold: 85
+    disk_threshold: 90
+

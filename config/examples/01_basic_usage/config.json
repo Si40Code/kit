@@ -1,0 +1,30 @@
+{
+  "app": {
+    "name": "example-app",
+    "version": "1.0.0",
+    "debug": true
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "timeout": 30.5,
+    "allowed_hosts": [
+      "localhost",
+      "127.0.0.1",
+      "example.com"
+    ]
+  },
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "secret123",
+    "database": "example_db"
+  },
+  "log": {
+    "level": "debug",
+    "format": "json",
+    "output": "stdout"
+  }
+}
+

@@ -1,0 +1,20 @@
+# 开发环境配置 - 覆盖 base 配置
+app:
+  env: development
+  debug: true
+
+server:
+  port: 9090  # 开发环境使用不同端口
+
+database:
+  host: dev-db.local  # 开发数据库
+  password: dev-password
+
+redis:
+  host: dev-redis.local
+
+log:
+  level: debug  # 开发环境启用 debug 日志
+
+
+

@@ -1,0 +1,21 @@
+# 本地配置文件（作为兜底配置）
+# 当远程配置不可用时，使用这些默认值
+
+app:
+  name: remote-config-demo
+  version: 1.0.0
+
+server:
+  host: 0.0.0.0
+  port: 8080
+
+database:
+  host: localhost
+  port: 3306
+
+log:
+  level: info
+
+feature:
+  new_feature_enabled: false
+

@@ -1,0 +1,35 @@
+app:
+  name: ""  # 空的应用名称
+  version: 1.0.0
+  debug: true
+
+server:
+  host: "invalid-host-name-that-does-not-exist"  # 无效的主机名
+  port: 99999  # 无效的端口号
+  timeout: 30.5
+
+database:
+  host: localhost
+  port: 3306
+  username: ""  # 空的用户名
+  password: ""  # 空的密码
+  database: example_db
+
+log:
+  level: "invalid_level"  # 无效的日志级别
+  format: "xml"  # 无效的日志格式
+  output: stdout
+
+# 包含格式错误的字段
+contact:
+  email: "not-an-email"  # 无效的邮箱格式
+  phone: "+86-138-0013-8000"
+
+api:
+  base_url: "not-a-url"  # 无效的URL格式
+  timeout: 30
+  retry_count: 3
+
+security:
+  jwt_secret: "short"  # 太短的密钥
+  session_timeout: 3600

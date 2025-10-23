@@ -1,0 +1,20 @@
+# SMS 本地配置（兜底配置）
+sms:
+  provider: local-provider
+  api_key: "local-api-key"
+  api_secret: "local-api-secret"
+  sign_name: "本地应用"
+  rate_limit: 100  # 本地默认限流
+  timeout: 10
+  
+  templates:
+    verification:
+      code: "SMS_LOCAL_001"
+      content: "您的验证码是：{code}，5分钟内有效"
+      
+  strategy:
+    batch_size: 100
+    batch_interval: 60
+    max_retry: 3
+    retry_interval: 5
+

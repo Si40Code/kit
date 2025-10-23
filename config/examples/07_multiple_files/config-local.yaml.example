@@ -1,0 +1,15 @@
+# 本地配置示例
+# 复制此文件为 config-local.yaml 并根据需要修改
+# config-local.yaml 不应提交到 Git
+
+app:
+  debug: true
+
+database:
+  host: localhost
+  password: your-local-password
+
+# 你可以在这里覆盖任何配置项
+
+
+

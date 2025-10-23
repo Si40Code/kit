@@ -1,0 +1,16 @@
+app:
+  name: example-app
+  version: 1.0.0
+  debug: true
+
+server:
+  host: 0.0.0.0
+  port: 1080
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: dev-password
+  database: example_db
+
