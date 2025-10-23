@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/knadh/koanf/v2"
-	"github.com/silin/go-pkg-sdk/config/provider"
+	"github.com/Si40Code/go-pkg-sdk/config/provider"
 )
 
 var (
