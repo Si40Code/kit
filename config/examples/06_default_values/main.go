@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/silin/go-pkg-sdk/config"
+	"github.com/Si40Code/go-pkg-sdk/config"
 )
 
 // AppConfig 应用配置结构体

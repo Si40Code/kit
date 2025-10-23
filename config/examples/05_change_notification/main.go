@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/silin/go-pkg-sdk/config"
+	"github.com/Si40Code/go-pkg-sdk/config"
 )
 
 func main() {

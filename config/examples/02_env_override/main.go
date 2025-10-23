@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/silin/go-pkg-sdk/config"
+	"github.com/Si40Code/go-pkg-sdk/config"
 )
 
 func main() {
