@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/knadh/koanf/v2"
 	"github.com/Si40Code/go-pkg-sdk/config/provider"
+	"github.com/knadh/koanf/v2"
 )
 
 var (
