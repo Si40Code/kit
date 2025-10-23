@@ -1,4 +1,4 @@
-module github.com/silin/go-pkg-sdk
+module github.com/Si40Code/go-pkg-sdk
 
 go 1.23.0
 
