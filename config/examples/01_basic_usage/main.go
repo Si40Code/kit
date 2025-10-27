@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Si40Code/go-pkg-sdk/config"
+	"github.com/Si40Code/kit/config"
 )
 
 // DatabaseConfig 数据库配置结构体

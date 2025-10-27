@@ -1,13 +1,13 @@
-# go-pkg-sdk
+# kit
 
-> 一个模块化、易用、生产就绪的 Go SDK，帮助你快速替换老项目中的常用模块。
+> 一个模块化、易用、生产就绪的 Go 工具包，帮助开发者快速构建可观测的应用。
 
 [![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.21-blue)](https://golang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## 🎯 项目目标
 
-`go-pkg-sdk` 旨在提供一套开箱即用的 Go 模块，帮助开发者：
+`kit` 旨在提供一套开箱即用的 Go 工具包，内置可观测性支持（日志、追踪、指标），帮助开发者：
 
 - 🚀 快速替换老项目中的遗留模块
 - 📦 独立使用每个模块，无强制依赖
@@ -31,7 +31,7 @@
 **快速开始：**
 
 ```go
-import "github.com/silin/go-pkg-sdk/config"
+import "github.com/Si40Code/kit/config"
 
 // 初始化配置
 config.Init(
@@ -75,14 +75,14 @@ config.OnChange(func() {
 ### 安装
 
 ```bash
-go get github.com/silin/go-pkg-sdk
+go get github.com/Si40Code/kit
 ```
 
 ### 单独使用某个模块
 
 ```go
 // 只需要配置模块
-import "github.com/silin/go-pkg-sdk/config"
+import "github.com/Si40Code/kit/config"
 
 func main() {
     config.Init(config.WithFile("config.yaml"))
@@ -96,9 +96,9 @@ func main() {
 
 ```go
 import (
-    "github.com/silin/go-pkg-sdk/config"
-    "github.com/silin/go-pkg-sdk/logger"
-    "github.com/silin/go-pkg-sdk/httpclient"
+    "github.com/Si40Code/kit/config"
+    "github.com/Si40Code/kit/logger"
+    "github.com/Si40Code/kit/httpclient"
 )
 
 func main() {
@@ -142,10 +142,10 @@ func main() {
 
 ```go
 // ✅ 只使用 config，不需要其他模块
-import "github.com/silin/go-pkg-sdk/config"
+import "github.com/Si40Code/kit/config"
 
 // ✅ 只使用 logger，不需要其他模块
-import "github.com/silin/go-pkg-sdk/logger"
+import "github.com/Si40Code/kit/logger"
 ```
 
 ### 2. 易用性优先
@@ -196,7 +196,7 @@ client := httpclient.New(
 ## 📂 项目结构
 
 ```
-go-pkg-sdk/
+kit/
 ├── config/              # 配置管理模块
 │   ├── examples/        # 5+ 使用示例
 │   └── README.md        # 模块文档
@@ -345,7 +345,7 @@ A: 本 SDK 是对优秀开源库的封装，提供了：
 A: 完全可以！所有模块都是独立的，按需导入即可：
 
 ```go
-import "github.com/silin/go-pkg-sdk/config"
+import "github.com/Si40Code/kit/config"
 ```
 
 ### Q: 如何从旧项目迁移？
@@ -357,8 +357,8 @@ A: 我们提供了详细的[迁移指南](./examples/migration_guide/)，涵盖�
 
 ## 📮 联系方式
 
-- 问题反馈：[GitHub Issues](https://github.com/silin/go-pkg-sdk/issues)
-- 功能建议：[GitHub Discussions](https://github.com/silin/go-pkg-sdk/discussions)
+- 问题反馈：[GitHub Issues](https://github.com/Si40Code/kit/issues)
+- 功能建议：[GitHub Discussions](https://github.com/Si40Code/kit/discussions)
 
 ---
 

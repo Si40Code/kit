@@ -20,7 +20,7 @@
 ### 安装
 
 ```bash
-go get github.com/silin/go-pkg-sdk/config
+go get github.com/Si40Code/kit/config
 ```
 
 ### 基础使用
@@ -30,7 +30,7 @@ package main
 
 import (
     "fmt"
-    "github.com/silin/go-pkg-sdk/config"
+    "github.com/Si40Code/kit/config"
 )
 
 func main() {
@@ -680,8 +680,8 @@ config.OnChange(func() {
 
 - [完整示例代码](./examples/)
 - [项目架构文档](../ARCHITECTURE.md)
-- [API 文档](https://pkg.go.dev/github.com/silin/go-pkg-sdk/config)
-- [问题反馈](https://github.com/silin/go-pkg-sdk/issues)
+- [API 文档](https://pkg.go.dev/github.com/Si40Code/kit/config)
+- [问题反馈](https://github.com/Si40Code/kit/issues)
 
 ## 📄 许可证
 

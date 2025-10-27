@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/Si40Code/go-pkg-sdk/config/provider"
+	"github.com/Si40Code/kit/config/provider"
 )
 
 type Option func(*options)

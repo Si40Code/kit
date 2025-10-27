@@ -1,4 +1,4 @@
-module github.com/Si40Code/go-pkg-sdk
+module github.com/Si40Code/kit
 
 go 1.23.0
 

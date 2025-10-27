@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Si40Code/go-pkg-sdk/config"
+	"github.com/Si40Code/kit/config"
 )
 
 func main() {
