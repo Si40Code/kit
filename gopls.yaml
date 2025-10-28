@@ -1,0 +1,53 @@
+# Gopls configuration for kit project
+# See: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+
+build:
+  # Use build tags for conditional compilation
+  buildFlags: []
+  # Build the entire workspace
+  expandWorkspaceToModule: true
+  # Allow gopls to modify go.mod
+  allowModfileModifications: true
+  # Set the directory for build artifacts  
+  directoryFilters:
+    - "-**/node_modules"
+    - "-**/vendor"
+
+ui:
+  # Enable semantic tokens for better syntax highlighting
+  semanticTokens: true
+  # Use placeholders in completion items
+  completion:
+    usePlaceholders: true
+    matcher: "Fuzzy"
+  # Configure diagnostic analyses
+  diagnostic:
+    analyses:
+      composites: false
+      unusedparams: true
+      unusedwrite: true
+      shadow: true
+      
+formatting:
+  # Use gofumpt for stricter formatting
+  gofumpt: true
+  
+# Improve performance
+symbolMatcher: "FastFuzzy"
+symbolStyle: "Dynamic"
+
+# Enable hover documentation
+hoverKind: "FullDocumentation"
+
+# Link target for documentation links  
+linkTarget: "pkg.go.dev"
+
+# Enable code lenses
+codelenses:
+  generate: true
+  regenerate_cgo: true
+  test: true
+  tidy: true
+  upgrade_dependency: true
+  vendor: true
+

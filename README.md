@@ -58,15 +58,164 @@ config.OnChange(func() {
 
 ---
 
-### 🔄 Logger - 日志模块（即将推出）
+### ✅ Logger - 日志模块
 
-高性能的日志模块，基于 [zap](https://github.com/uber-go/zap) 封装。
+高性能、易用的日志模块，基于 [zap](https://github.com/uber-go/zap) 封装。
+
+**特性：**
+- 五级日志：Debug、Info、Warn、Error、Fatal
+- 双 API 风格：结构化字段 + Map 字段
+- 多种输出：stdout、文件、远程（OTLP）
+- 日志切割：基于大小、时间、数量
+- Trace 集成：自动关联 OpenTelemetry
+- Error 标记：Error/Fatal 自动标记 span
+- 全局 + 实例：同时支持两种使用方式
+
+**快速开始：**
+
+```go
+import "github.com/Si40Code/kit/logger"
+
+// 使用默认 logger
+ctx := context.Background()
+logger.Info(ctx, "应用启动", "version", "1.0.0")
+
+// 初始化自定义配置
+logger.Init(
+    logger.WithLevel(logger.InfoLevel),
+    logger.WithFormat(logger.JSONFormat),
+    logger.WithFile("/var/log/app.log",
+        logger.WithFileMaxSize(100),
+        logger.WithFileMaxAge(30),
+    ),
+    logger.WithOTLP("signoz:4317"),
+    logger.WithTrace("my-service"),
+)
+
+// 结构化日志
+logger.Info(ctx, "用户登录",
+    "user_id", 12345,
+    "ip", "192.168.1.1",
+)
+
+// Trace 集成
+tracer := otel.Tracer("my-service")
+ctx, span := tracer.Start(ctx, "operation")
+defer span.End()
+
+logger.Info(ctx, "操作开始")  // 自动包含 trace_id
+logger.Error(ctx, "操作失败") // 自动标记 span 为 error
+```
+
+**更多示例：** [logger/examples](./logger/examples)
 
 ---
 
-### 🌐 HTTPClient - HTTP 客户端模块（即将推出）
+### ✅ HTTPClient - HTTP 客户端模块
 
-简单易用的 HTTP 客户端，基于标准库 `net/http`。
+生产级的 HTTP 客户端，基于 [resty](https://github.com/go-resty/resty) 封装。
+
+**特性：**
+- OpenTelemetry Trace 集成：自动创建和传播 span
+- 完整的日志记录：记录请求/响应的所有详情
+- 详细的 Metric：收集 DNS、TCP、TLS 等性能数据
+- 自动重试：支持可配置的重试机制
+- 连接池优化：高效的连接复用和管理
+- 统一的 Option 配置：遵循 kit 的设计风格
+
+**快速开始：**
+
+```go
+import "github.com/Si40Code/kit/httpclient"
+
+// 创建客户端
+client := httpclient.New(
+    httpclient.WithLogger(logger.Default()),
+    httpclient.WithTrace("my-service"),
+    httpclient.WithTimeout(10*time.Second),
+)
+
+// 发起请求
+ctx := context.Background()
+resp, err := client.R(ctx).
+    SetHeader("Authorization", "Bearer token").
+    SetBody(data).
+    Post("https://api.example.com/endpoint")
+
+if err != nil {
+    logger.Error(ctx, "请求失败", "error", err)
+    return
+}
+
+logger.Info(ctx, "请求成功", "status", resp.StatusCode())
+```
+
+**更多示例：** [httpclient/examples](./httpclient/examples)
+
+---
+
+### ✅ ORM - 数据库 ORM 模块
+
+生产级的 ORM 客户端，基于 [GORM](https://gorm.io/) 封装。
+
+**特性：**
+- 完整的日志记录：自动记录所有 SQL 查询
+- OpenTelemetry Trace 集成：每个查询自动创建独立 span
+- 详细的 Metric：收集查询类型、表名、耗时、错误等
+- 慢查询检测：自动识别并警告慢查询
+- 灵活的错误处理：可配置查询无数据时不返回错误
+- 连接池管理：生产级连接池配置
+- 完全兼容 GORM：直接暴露 `*gorm.DB`
+
+**快速开始：**
+
+```go
+import (
+    "github.com/Si40Code/kit/logger"
+    "github.com/Si40Code/kit/orm"
+    "gorm.io/driver/mysql"
+)
+
+type User struct {
+    ID   uint   `gorm:"primarykey"`
+    Name string
+    Age  int
+}
+
+func main() {
+    // 初始化 logger
+    logger.Init(logger.WithStdout())
+    defer logger.Sync()
+
+    // 创建 ORM 客户端
+    dsn := "user:password@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True"
+    client, err := orm.New(
+        mysql.Open(dsn),
+        orm.WithLogger(logger.Default()),
+        orm.WithTrace("my-service"),
+        orm.WithSlowThreshold(100*time.Millisecond),
+        orm.WithMaxOpenConns(100),
+    )
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    ctx := context.Background()
+
+    // 使用 GORM 的所有功能
+    var user User
+    client.WithContext(ctx).First(&user, 1)
+    
+    // 支持事务
+    client.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+        tx.Create(&user)
+        return nil
+    })
+}
+```
+
+**更多示例：** [orm/examples](./orm/examples)
 
 ---
 
@@ -110,8 +259,8 @@ func main() {
     
     // 2. 基于配置初始化日志
     logger.Init(
-        logger.WithLevel(config.GetString("log.level")),
-        logger.WithFormat(config.GetString("log.format")),
+        logger.WithLevel(logger.ParseLevel(config.GetString("log.level"))),
+        logger.WithFormat(logger.Format(config.GetString("log.format"))),
     )
     
     // 3. 创建 HTTP 客户端
@@ -120,8 +269,9 @@ func main() {
         httpclient.WithLogger(logger.Default()),
     )
     
-    logger.Info("App started", 
-        logger.String("name", config.GetString("app.name")),
+    ctx := context.Background()
+    logger.Info(ctx, "App started", 
+        "name", config.GetString("app.name"),
     )
 }
 ```
@@ -198,10 +348,20 @@ client := httpclient.New(
 ```
 kit/
 ├── config/              # 配置管理模块
+│   ├── examples/        # 9+ 使用示例
+│   └── README.md        # 模块文档
+├── logger/              # 日志模块
 │   ├── examples/        # 5+ 使用示例
 │   └── README.md        # 模块文档
-├── logger/              # 日志模块（即将推出）
-├── httpclient/          # HTTP 客户端模块（即将推出）
+├── httpclient/          # HTTP 客户端模块
+│   ├── examples/        # 4+ 使用示例
+│   └── README.md        # 模块文档
+├── orm/                 # 数据库 ORM 模块
+│   ├── examples/        # 4+ 使用示例
+│   └── README.md        # 模块文档
+├── web/                 # Web 框架模块
+│   ├── examples/        # 8+ 使用示例
+│   └── README.md        # 模块文档
 ├── examples/            # 综合示例和最佳实践
 └── docs/                # 项目文档
 ```
@@ -323,10 +483,11 @@ log:
 ## 🗺️ 路线图
 
 - [x] **v0.1** - Config 模块
-- [ ] **v0.2** - Logger 模块
-- [ ] **v0.3** - HTTPClient 模块
-- [ ] **v0.4** - Cache 模块
-- [ ] **v0.5** - Database 模块
+- [x] **v0.2** - Logger 模块
+- [x] **v0.3** - HTTPClient 模块
+- [x] **v0.4** - ORM 模块
+- [ ] **v0.5** - Web 模块
+- [ ] **v0.6** - Cache 模块
 - [ ] **v1.0** - 正式版本发布
 
 ## ❓ 常见问题
