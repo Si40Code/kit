@@ -8,6 +8,7 @@ import (
 
 	zapotlpencoder "github.com/SigNoz/zap_otlp/zap_otlp_encoder"
 	zapotlpsync "github.com/SigNoz/zap_otlp/zap_otlp_sync"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	"go.uber.org/zap/zapcore"
@@ -32,7 +33,7 @@ func createCores(opts *options) ([]zapcore.Core, error) {
 		case FileOutput:
 			core, err = createFileCore(output.Config, opts.format, opts.development, level)
 		case OTLPOutput:
-			core, err = createOTLPCore(output.Config, opts.serviceName, level)
+			core, err = createOTLPCore(output.Config, opts.serviceName, opts.resourceAttributes, level)
 		default:
 			return nil, fmt.Errorf("unknown output type: %s", output.Type)
 		}
@@ -86,7 +87,7 @@ func createFileCore(cfg OutputConfig, format Format, development bool, level zap
 }
 
 // createOTLPCore 创建 OTLP 输出 core（用于 SigNoz）
-func createOTLPCore(cfg OutputConfig, serviceName string, level zapcore.Level) (zapcore.Core, error) {
+func createOTLPCore(cfg OutputConfig, serviceName string, resourceAttrs []attribute.KeyValue, level zapcore.Level) (zapcore.Core, error) {
 	if cfg.Endpoint == "" {
 		return nil, fmt.Errorf("endpoint is required for OTLP output")
 	}
@@ -137,6 +138,13 @@ func createOTLPCore(cfg OutputConfig, serviceName string, level zapcore.Level) (
 	}
 	otlpEncoder := zapotlpencoder.NewOTLPEncoder(encoderConfig)
 
+	// 构建 resource attributes
+	resourceAttributes := []attribute.KeyValue{
+		semconv.ServiceNameKey.String(serviceName),
+	}
+	// 添加自定义 resource attributes
+	resourceAttributes = append(resourceAttributes, resourceAttrs...)
+
 	// 创建 OTLP Syncer
 	otlpSyncer := zapotlpsync.NewOtlpSyncer(conn, zapotlpsync.Options{
 		BatchSize:      100,
@@ -144,10 +152,9 @@ func createOTLPCore(cfg OutputConfig, serviceName string, level zapcore.Level) (
 		ResourceSchema: semconv.SchemaURL,
 		Resource: resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceNameKey.String(serviceName),
+			resourceAttributes...,
 		),
 	})
 
 	return zapcore.NewCore(otlpEncoder, otlpSyncer, level), nil
 }
-

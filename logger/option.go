@@ -1,20 +1,25 @@
 package logger
 
-import "time"
+import (
+	"time"
+
+	"go.opentelemetry.io/otel/attribute"
+)
 
 // Option 配置选项函数
 type Option func(*options)
 
 // options 配置选项结构体
 type options struct {
-	level       Level
-	format      Format
-	outputs     []Output
-	enableTrace bool
-	serviceName string
-	development bool
-	caller      bool
-	stacktrace  bool
+	level              Level
+	format             Format
+	outputs            []Output
+	enableTrace        bool
+	serviceName        string
+	development        bool
+	caller             bool
+	stacktrace         bool
+	resourceAttributes []attribute.KeyValue
 }
 
 // Output 输出配置
@@ -126,9 +131,9 @@ func WithFile(path string, opts ...FileOption) Option {
 	return func(o *options) {
 		cfg := OutputConfig{
 			FilePath:   path,
-			MaxSize:    100,  // 默认 100MB
-			MaxAge:     7,    // 默认保留 7 天
-			MaxBackups: 3,    // 默认保留 3 个备份
+			MaxSize:    100, // 默认 100MB
+			MaxAge:     7,   // 默认保留 7 天
+			MaxBackups: 3,   // 默认保留 3 个备份
 			Compress:   false,
 		}
 
@@ -219,3 +224,9 @@ func WithStacktrace(enabled bool) Option {
 	}
 }
 
+// WithResourceAttributes 设置 OTLP 输出的 resource attributes
+func WithResourceAttributes(attrs ...attribute.KeyValue) Option {
+	return func(o *options) {
+		o.resourceAttributes = append(o.resourceAttributes, attrs...)
+	}
+}
